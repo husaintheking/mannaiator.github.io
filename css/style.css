@@ -1,0 +1,42 @@
+.synthMain{
+  height: 800px;
+  width: 1200px;
+  background-color: blue;
+  border: solid black 4px;
+  border-radius: 15px;
+}
+
+.osc{
+  height: 150px;
+  width: 500px;
+  background-color: white;
+  border: solid black 4px; 
+  margin-top: 10px;
+}
+
+
+
+.oscZone{
+  height: 150px;
+  width: 120px;
+  position: absolute;
+  display: inline-block;
+  border: solid black 1px; 
+}
+
+#oZ2{
+  left: 160px;
+}
+
+#oZ3{
+  left: 320px;
+}
+
+.buttOsc{
+  background-color: yellow;
+  
+}
+
+#osc1{
+  
+}
