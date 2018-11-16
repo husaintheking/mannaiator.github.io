@@ -2,40 +2,108 @@
   height: 800px;
   width: 1200px;
   background-color: blue;
-  border: solid black 4px;
-  border-radius: 15px;
+  border: solid black 2px;
+  border-radius: 5px;
+  display:inline-block;
+}
+
+.oscContainer{
+  width:550px;
+  height:500px;
+  display:inline-block;
+  margin: 1px;
+  background-color:white;
+  border-radius: 5px;
 }
 
 .osc{
-  height: 150px;
-  width: 500px;
-  background-color: white;
-  border: solid black 4px; 
-  margin-top: 10px;
+  width:500px;
+  height:150px;
+  border: 1px solid black;
+  margin:2px;
+  background-color:white;
+  border-radius: 10px;
+  display:inline-flex;
+}
+
+.oscZone {
+  
+  height:145px;
+  border: 1px solid red;
+  margin:2px;
+  background-color:white;
+  border-radius: 5px;  
+}
+
+#oscZone1{
+  width:200px;
+  display:inline-block;
+}
+
+#oscZone2{
+  width:150px;
+}
+
+#oscZone3{
+  width:100px;
+}
+
+.buttonOscContainer{
+  width:200px;
+  background-color:yellow;
+  height:40px;
+  display:inline-flex;
+}
+
+#oscButton{
+  background-color:white;
+  border:1px solid black;
+  margin:2px;
+  border-radius: 15px;
+  width:50px;
+  position:relative;
+}
+
+.onOffOsc{
+  background-color:red;
+  border-radius:50px;
+  width:20px;
+  heigth:20px;
+  margin-top:10px;
+  margin-bottom:10px;
+  margin-left:5px;
+  margin-right:5px;
+  
+}
+
+.dotOnOffContainer{
+  width:50px;
+  height:39px;
+  border:1px solid black;
+  background-color:green;
+  display:inline-flex;
+  
 }
 
 
 
-.oscZone{
-  height: 150px;
-  width: 120px;
-  position: absolute;
-  display: inline-block;
-  border: solid black 1px; 
+
+
+
+
+#oz1{
+  
 }
 
 #oZ2{
-  left: 160px;
+  
+  
 }
 
 #oZ3{
-  left: 320px;
-}
-
-.buttOsc{
-  background-color: gray;
   
 }
+
 
 #osc1{
   
