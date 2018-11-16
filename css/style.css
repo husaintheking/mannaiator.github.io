@@ -50,7 +50,7 @@
 
 .buttonOscContainer{
   width:200px;
-  background-color:yellow;
+  //background-color:yellow;
   height:40px;
   display:inline-flex;
 }
@@ -67,12 +67,10 @@
 .onOffOsc{
   background-color:red;
   border-radius:50px;
-  width:20px;
-  heigth:20px;
-  margin-top:10px;
-  margin-bottom:10px;
-  margin-left:5px;
-  margin-right:5px;
+  width:15px;
+  height:15px;
+  margin:10px;
+  border: 1px solid black;
   
 }
 
@@ -86,25 +84,41 @@
 }
 
 
+#butt1{}
+#butt2{}
+#butt3{}
 
+#dot1{}
+#dot2{}
+#dot3{}
 
-
-
-
-#oz1{
-  
-}
-
-#oZ2{
-  
-  
-}
-
-#oZ3{
-  
+.clicked{
+  background-color:yellow;
 }
 
 
-#osc1{
-  
+.knobVol{
+  background-color:black;
+  width:30px;
+  height:30px;
+  border-radius:50px;
+  margin-left:80px;
+  transform:translateY(-50%);
+  position:relative;
+  top:50%;  
 }
+
+.knobLabel{
+  width:4px;
+  height:14px;
+  background-color:red;
+  position:relative;
+  transform:translateX(-50%);
+  left:50%;
+}
+
+#vol1{}
+#vol2{}
+#vol3{}
+
+

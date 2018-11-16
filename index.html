@@ -20,9 +20,13 @@
       <div class = "oscZone" id="oscZone1">
         <div class="buttonOscContainer" >
           
-            <div class="onOffOsc"></div>
+            <div id="dot1"class="onOffOsc"></div>
         
-          <button>OSC1</button>
+          <button id="butt1" onclick="changeColorDot(1)">OSC1</button>
+          <div id="vol1" class="knobVol">
+            <div class="knobLabel"></div>
+            
+          </div>
         </div>
         
         <canvas height="50px" width="190px" style="border: solid black 1px"></canvas>
@@ -36,8 +40,54 @@
     
     
     
-    <div class="osc" id="osc2"></div>
-    <div class="osc" id="osc3"></div>
+    
+    
+    <div class="osc" id="osc2">
+      <div class = "oscZone" id="oscZone1">
+        <div class="buttonOscContainer" >
+          
+            <div id="dot2"class="onOffOsc"></div>
+        
+          <button id="butt2" onclick= "changeColorDot(2)">OSC2</button>
+        </div>
+        
+        <canvas height="50px" width="190px" style="border: solid black 1px"></canvas>
+        
+        
+      </div>
+      
+      <div class = "oscZone" id="oscZone2"></div>
+      <div class = "oscZone" id="oscZone3"></div>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="osc" id="osc3">
+      
+      
+      <div class = "oscZone" id="oscZone1">
+        <div class="buttonOscContainer" >
+          
+            <div id="dot3"class="onOffOsc"></div>
+        
+          <button id="butt3" onclick="changeColorDot(3)">OSC3</button>
+        </div>
+        
+        <canvas height="50px" width="190px" style="border: solid black 1px"></canvas>
+        
+        
+      </div>
+      
+      <div class = "oscZone" id="oscZone2"></div>
+      <div class = "oscZone" id="oscZone3"></div>
+      
+      
+    </div>
     
     
   </div>
@@ -45,6 +95,11 @@
 </div>
   
   
+
+    <script  src="js/index.js"></script>
+
+
+
 
 </body>
 
