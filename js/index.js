@@ -1,11 +1,10 @@
 var c1;
-
-  c1= new AudioContext();
-  var canvas = document.querySelector("#canv1");
-  var ctx = canvas.getContext("2d");
-  var analyser = c1.createAnalyser();
-  var bufferLength = analyser.frequencyBinCount;
-  var dataArray = new Uint8Array(bufferLength);
+var canvas;
+var ctx;
+var analyser;
+var bufferLength;
+var dataArray;
+  
 
 function createAudio(){
   c1= new AudioContext();
