@@ -1,3 +1,68 @@
+.bar{
+  position:absolute;
+  left: 70px;
+  top:1000px;
+  width:1200px;
+  height:200px;
+  margin-top: -400px;
+}
+.white-steps{
+  position: relative;
+  background
+  width:1200px;
+  height:200px;
+  display: inline-flex;
+}
+
+.black-steps1{
+  position: relative;
+  transform: translate(-206%);
+  left:4px;
+  width:500px;
+  height:300px;
+  display: inline-flex;
+}
+.black-steps2{
+  position:relative;
+  transform: translate(-524%);
+  width:250px;
+  height:600px;
+  display: inline-flex;
+}
+.black-steps3{
+  position:relative;
+  transform: translate(-254%);
+  width:500px;
+  height:300px;
+  display: inline-flex;
+}
+.black-steps4{
+  position:relative;
+  transform: translate(-622%);
+  width:250px;
+  height:300px;
+  display: inline-flex;
+}
+.step{}
+.white-step{
+  position:relative;
+  width: 70px;
+  height: 200px;
+  background-color: #fff8dc;
+  border: 1px solid #111111;
+}
+
+.black-step{
+  margin-right: 35px;
+  width: 35px;
+  height: 170px;
+  background-color: #2f4f4f;
+  border: 1px solid grey;
+  display:inline-block;
+}
+.clicked-step{
+  background-color: red;
+}
 .synthMain{
   height: 800px;
   width: 1200px;
