@@ -1,10 +1,32 @@
+#butt1 {
+  height: 30px;
+  margin-top: 5px;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+#butt2 {
+  height: 30px;
+  margin-top: 5px;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+#butt3 {
+  height: 30px;
+  margin-top: 5px;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+canvas{
+  background-color: black;
+}
 .bar{
   position:absolute;
   left: 70px;
   top:1000px;
-  width:1200px;
-  height:200px;
+  width:1080px;
+  height:202.5px;
   margin-top: -400px;
+  border: 4px solid #00004F;
 }
 .white-steps{
   position: relative;
@@ -21,6 +43,7 @@
   width:500px;
   height:300px;
   display: inline-flex;
+  margin-top: 0.5px;
 }
 .black-steps2{
   position:relative;
@@ -28,6 +51,7 @@
   width:250px;
   height:600px;
   display: inline-flex;
+  margin-top: 0.5px;
 }
 .black-steps3{
   position:relative;
@@ -35,6 +59,7 @@
   width:500px;
   height:300px;
   display: inline-flex;
+  margin-top: 0.5px;
 }
 .black-steps4{
   position:relative;
@@ -42,6 +67,7 @@
   width:250px;
   height:300px;
   display: inline-flex;
+  margin-top: 0.5px;
 }
 .step{}
 .white-step{
@@ -57,7 +83,7 @@
   width: 35px;
   height: 170px;
   background-color: #2f4f4f;
-  border: 1px solid grey;
+  border: 1px solid black;
   display:inline-block;
 }
 .clicked-step{
@@ -66,56 +92,59 @@
 .synthMain{
   height: 800px;
   width: 1200px;
-  background-color: blue;
+  background-color: #400040;
   border: solid black 2px;
   border-radius: 5px;
   display:inline-block;
 }
 
 .oscContainer{
-  width:550px;
-  height:500px;
+  width:677px;
+  height:480px;
   display:inline-block;
   margin: 1px;
-  background-color:white;
+  background-color:#00004F;
   border-radius: 5px;
 }
 
 .osc{
-  width:500px;
-  height:150px;
+  width:671px;
+  height:154px;
   border: 1px solid black;
   margin:2px;
-  background-color:white;
+  background-color:black;
   border-radius: 10px;
   display:inline-flex;
+}
+.selectedOsc{
+  background: linear-gradient(to bottom, black 0%, #00FF00 100%);
 }
 
 .oscZone {
   
   height:145px;
-  border: 1px solid red;
+  border: 2px solid #404040;
   margin:2px;
-  background-color:white;
+  background-color:#B2B2B2;
   border-radius: 5px;  
 }
 
 #oscZone1{
-  width:200px;
+  width:250px;
   display:inline-block;
 }
 
 #oscZone2{
-  width:150px;
+  width:200px;
 }
 
 #oscZone3{
-  width:100px;
+  width:200px;
 }
 
 .buttonOscContainer{
-  width:200px;
-  //background-color:yellow;
+  width:250px;
+  background-color:#4F4F4F;
   height:40px;
   display:inline-flex;
 }
@@ -130,13 +159,12 @@
 }
 
 .onOffOsc{
-  background-color:red;
+  background-color:#004200;
   border-radius:50px;
   width:15px;
   height:15px;
   margin:10px;
-  border: 1px solid black;
-  
+  border: 3px solid black;
 }
 
 .dotOnOffContainer{
@@ -158,7 +186,7 @@
 #dot3{}
 
 .clicked{
-  background-color:yellow;
+  background-color:#00FF00;
 }
 
 
@@ -167,10 +195,12 @@
   width:30px;
   height:30px;
   border-radius:50px;
-  margin-left:80px;
+  margin-left:20px;
   transform:translateY(-50%);
   position:relative;
-  top:50%;  
+  top:50%;
+  transform:translateY(-50%) rotate(225deg);
+  
 }
 
 .knobLabel{

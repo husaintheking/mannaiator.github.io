@@ -52,10 +52,18 @@
     <div class="osc" id="osc1">
       <div class = "oscZone" id="oscZone1">
         <div class="buttonOscContainer" >
-          
-            <div id="dot1"class="onOffOsc"></div>
-        
+          <span id="dot1"class="onOffOsc"></span>
           <button id="butt1" onclick="changeColorDot(1)">OSC1</button>
+          <div id="container">
+            <select name="select_box" id="select_box" >
+               <option value="">Sine</option>
+               <option value="">Triangle</option>
+               <option value="">Square</option>
+               <option value="">SawTooth</option>
+               <option value="">Nglamammt</option>
+            </select>
+          <input type="hidden" name="select_flag" id="select_flag" value="0">
+          </div>
           <div id="vol1" class="knobVol">
             <div class="knobLabel"></div>
             
