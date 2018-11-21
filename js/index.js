@@ -94,21 +94,17 @@ keys = "qwertyuiopasdfghjklzxcvbn"
 
 document.querySelectorAll(".step").forEach(toggleStep)
 
-function toggleStep(step){
-  //step.onclick= clickOnKeyBoard
+function toggleStep(step){  
   step.onmousedown= function (step) {
     if(!step.repeat) 
       {step.target.classList.toggle("clicked-step");
-
-       attack(tones[mouseSteps.indexOf(step.target.id)], selectedGain[f]);
-       
+       attack(tones[mouseSteps.indexOf(step.target.id)], selectedGain[f]); 
        
       }
   }
   step.onmouseup= function (step) {
     if(!step.repeat) 
       {step.target.classList.toggle("clicked-step")
-      //console.log(step.target.id);
        release(tones[mouseSteps.indexOf(step.target.id)]);
       }
   }
@@ -138,7 +134,6 @@ document.onkeyup = function(e) {
 
 function calculateDeg(deg){
   f = gradi.indexOf(deg);
-  console.log(f)
 }
 
 let spinner = document.getElementById('vol1');
@@ -151,24 +146,32 @@ let x,
     startY,
     diffX,
     diffY,
-    tryFlag= true,
+    calculate=false,
+    tryFlag=true,
     firstDeg,
     oldDelta,
     delta,
-    hold = false
+    hold = false,
+    indice=0
 spinner.addEventListener('mousedown',function(e){
   hold = true;
+  calculate=true;
   startX = e.clientX;
   startY = e.clientY;
+  indice=0;
   
 })
 window.addEventListener('mouseup',function(e){
   if (hold){
     
+    if(tryFlag){
     saveX=diffX;
-    saveY=diffY;
+    saveY=diffY;}
     hold = false;
+    delta=oldDelta;
+    
   }
+  
 })
 window.addEventListener('mousemove',function(e){
   diffX=0;
@@ -176,8 +179,10 @@ window.addEventListener('mousemove',function(e){
   if (hold){
      diffX= e.clientX - startX + saveX;
      diffY= e.clientY - startY + saveY;
-    delta = Math.abs(diffX) > Math.abs(diffY) ? -diffX : diffY;
+    //console.log(saveX,saveY +"BASTARDO")
+    //console.log(diffX,diffY)
     
+    delta = Math.abs(diffX) > Math.abs(diffY) ? -diffX : diffY;
     if(tryFlag){
   
     firstDeg = (Math.round(-delta/15) * 15);
@@ -193,16 +198,23 @@ window.addEventListener('mousemove',function(e){
       calculateDeg(deg);
       
       
-      if(deg==225){
-         
+      if(deg==225){ 
+        calculateCoord();
         if(delta>=oldDelta) tryFlag=false;
         else tryFlag=true;
       }
       
       if(deg==135){
-         
+        
+        calculateMax();
+        //if(indice==0){console.log(indice);
+                      //indice++;}
+        //calculateCoord(); 
         if(delta<=oldDelta) tryFlag=false;
         else tryFlag=true;
+        //console.log(indice);
+        
+        
       }
       
     
@@ -219,6 +231,24 @@ window.addEventListener('mousemove',function(e){
   
   
 })
+
+function calculateMax(){
+  if(indice==0)
+    {
+      saveX=diffX;
+      saveY=diffY;
+      console.log(saveX,saveY)
+    }
+  indice++;
+  //console.log(indice);
+}
+
+function calculateCoord(){
+  if(calculate){
+  saveX=diffX;
+  saveY=diffY;}
+  calculate=false;
+}
 
 
 function expandSelect(id){
@@ -255,4 +285,4 @@ for(i=0;i<=20;i++){
 
 
 
-console.log(deg);
+//console.log(deg);
