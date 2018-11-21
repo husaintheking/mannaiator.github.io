@@ -6,11 +6,23 @@ var gradi = [];
 var selectedGain = [];
 var deg=0;
 var sel= document.getElementById("select_box");
-function createAudio(){
+
+
+function createAudio1(){
   c1= new AudioContext();
   canvas = document.querySelector("#canv1");
   ctx = canvas.getContext("2d");
   analyser = c1.createAnalyser();
+  bufferLength = analyser.frequencyBinCount;
+  dataArray = new Uint8Array(bufferLength);
+}
+
+
+function createAudio2(){
+  c2= new AudioContext();
+  canvas = document.querySelector("#canv2");
+  ctx= canvas.getContext("2d");
+  analyser2 = c2.createAnalyser();
   bufferLength = analyser.frequencyBinCount;
   dataArray = new Uint8Array(bufferLength);
 }
@@ -47,8 +59,11 @@ function changeColorDot(x){
   var z = "osc" + x;
   document.getElementById(y).classList.toggle("clicked");
   document.getElementById(z).classList.toggle("selectedOsc");
+  
+  if(x==1){
+  
   if (turnOn==false) {
-          createAudio();
+          createAudio1();
           drawSamples();
           sel.disabled = false;
   }
@@ -59,6 +74,8 @@ function changeColorDot(x){
   }
   
     turnOn=!turnOn;
+    
+  }
 }
 
 
@@ -98,10 +115,13 @@ function toggleStep(step){
   step.onmousedown= function (step) {
     if(!step.repeat) 
       {step.target.classList.toggle("clicked-step");
-       attack(tones[mouseSteps.indexOf(step.target.id)], selectedGain[f]); 
-       
+       attack(tones[mouseSteps.indexOf(step.target.id)], selectedGain[f]);
       }
+
   }
+    
+  
+  
   step.onmouseup= function (step) {
     if(!step.repeat) 
       {step.target.classList.toggle("clicked-step")
@@ -121,7 +141,7 @@ document.onkeydown = function(e) {
   if(!e.repeat){
     clickOnKeyBoard(steps[keys.indexOf(e.key)])
     attack(tones[keys.indexOf(e.key)], selectedGain[f])
-  }
+  }a
 }
 
 document.onkeyup = function(e) { 

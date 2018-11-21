@@ -41,7 +41,7 @@ canvas{
   transform: translate(-206%);
   left:4px;
   width:500px;
-  height:300px;
+  height:0px;
   display: inline-flex;
   margin-top: 0.5px;
 }
@@ -49,7 +49,7 @@ canvas{
   position:relative;
   transform: translate(-524%);
   width:250px;
-  height:600px;
+  height:0px;
   display: inline-flex;
   margin-top: 0.5px;
 }
@@ -57,7 +57,7 @@ canvas{
   position:relative;
   transform: translate(-254%);
   width:500px;
-  height:300px;
+  height:0px;
   display: inline-flex;
   margin-top: 0.5px;
 }
@@ -65,7 +65,7 @@ canvas{
   position:relative;
   transform: translate(-622%);
   width:250px;
-  height:300px;
+  height:0px;
   display: inline-flex;
   margin-top: 0.5px;
 }
