@@ -1,15 +1,17 @@
 var c1,c2,c3;
-var o;
+var o1,o2,o3;
 var n = 0;
-var f;
+var f1,f2;
 var gradi = [];
 var selectedGain = [];
 var deg=0;
-var sel= document.getElementById("select_box");
+var sel1= document.getElementById("select_box1");
+var sel2= document.getElementById("select_box2");
 var firstTime=true;
 var turnOn1=false, turnOn2=false;
 var gates=[];
-sel.disabled=true;
+sel1.disabled=true;
+sel2.disabled=true;
 
 function createAudio1(){
   c1= new AudioContext();
@@ -18,6 +20,7 @@ function createAudio1(){
   analyser = c1.createAnalyser();
   bufferLength = analyser.frequencyBinCount;
   dataArray = new Uint8Array(bufferLength);
+  
 }
 
 function createAudio2(){
@@ -30,26 +33,43 @@ function createAudio2(){
 }
 
 
-function attack(freq ,selGain) {
-  c= new AudioContext();
-  if (turnOn1)  c=c1;
-  if (turnOn2)   c=c2;
-  o = c.createOscillator();
-  g = c.createGain();
-  o.connect(g);
+function attack1(freq ,selGain) {
+  console.log("cia");
+  o1 = c1.createOscillator();
+  g = c1.createGain();
+  o1.connect(g);
   g.connect(analyser);
-  analyser.connect(c.destination);
-  o.frequency.value = freq;
+  analyser.connect(c1.destination);
+  o1.frequency.value = freq;
   g.gain.value = 0;
-  var now = c.currentTime;
+  var now = c1.currentTime;
   g.gain.linearRampToValueAtTime(selGain,now+0.1);
   gates[freq] = g;
-  o.start();
-  if (sel.options.selectedIndex=="0") {o.type='sine'}
-  if (sel.options.selectedIndex=="1") {o.type='triangle'}
-  if (sel.options.selectedIndex=="2") {o.type='square'}
-   if (sel.options.selectedIndex=="3") {o.type='sawtooth'}
+  o1.start();
+  if (sel1.options.selectedIndex=="0") {o1.type='sine'}
+  if (sel1.options.selectedIndex=="1") {o1.type='triangle'}
+  if (sel1.options.selectedIndex=="2") {o1.type='square'}
+   if (sel1.options.selectedIndex=="3") {o1.type='sawtooth'}
 }
+
+function attack2(freq ,selGain) {
+  o2 = c2.createOscillator();
+  g = c2.createGain();
+  o2.connect(g);
+  g.connect(analyser);
+  analyser.connect(c2.destination);
+  o2.frequency.value = freq;
+  g.gain.value = 0;
+  var now = c2.currentTime;
+  g.gain.linearRampToValueAtTime(selGain,now+0.1);
+  gates[freq] = g;
+  o2.start();
+  if (sel2.options.selectedIndex=="0") {o2.type='sine'}
+  if (sel2.options.selectedIndex=="1") {o2.type='triangle'}
+  if (sel2.options.selectedIndex=="2") {o2.type='square'}
+   if (sel2.options.selectedIndex=="3") {o2.type='sawtooth'}
+}
+
 
 function deleteAudio(){
   if(turnOn1) c1.close();
@@ -63,14 +83,15 @@ function activateAudio(x){
   if(x==1){
     if (!turnOn1) {
           createAudio1();
+      
           drawSamples();
-          sel.disabled = false;
+          sel1.disabled = false;
           
     }
     else {
       analyser = c1.createAnalyser();
       deleteAudio();
-      sel.disabled = true
+      sel1.disabled = true
     }
   
     turnOn1=!turnOn1;  
@@ -81,14 +102,14 @@ function activateAudio(x){
     if (!turnOn2) {
           createAudio2();
           drawSamples();
-          sel.disabled = false;
+          sel2.disabled = false;
           
       
     }
     else {
       analyser = c2.createAnalyser();
       deleteAudio();
-      sel.disabled = true
+      sel2.disabled = true
     }
   
     turnOn2=!turnOn2;  
@@ -143,7 +164,12 @@ function toggleStep(step){
   step.onmousedown= function (step) {
     if(!step.repeat) 
       {step.target.classList.toggle("clicked-step");
-       attack(tones[mouseSteps.indexOf(step.target.id)], selectedGain[f]);
+       if(turnOn1)
+            {attack1(tones[mouseSteps.indexOf(step.target.id)], selectedGain[f]);
+             
+            }
+       if(turnOn2)
+            attack2(tones[mouseSteps.indexOf(step.target.id)], selectedGain[f]);
       }
 
   }
@@ -166,7 +192,10 @@ function clickOnKeyBoard(step){
 document.onkeydown = function(e) {  
   if(!e.repeat){
     clickOnKeyBoard(steps[keys.indexOf(e.key)])
-    attack(tones[keys.indexOf(e.key)], selectedGain[f])
+    if(turnOn1)
+    attack1(tones[keys.indexOf(e.key)], selectedGain[f1])
+    if(turnOn2)
+    attack2(tones[keys.indexOf(e.key)], selectedGain[f2])
   }
 }
 
@@ -178,9 +207,15 @@ document.onkeyup = function(e) {
 }
 
 
-function calculateDeg(deg){
-  f = gradi.indexOf(deg);
+function calculateDeg(deg,name){
+  if(name=='vol1')
+    f1= gradi.indexOf(deg);
+  if(name=='vol2')
+    f2= gradi.indexOf(deg);
+  
+  console.log(f1,f2)
 }
+
 
 
 
@@ -246,7 +281,7 @@ window.addEventListener('mousemove',function(e){
     if((firstDeg>=0 && firstDeg<=135) || (firstDeg>=225 && firstDeg<=360)){
       deg=firstDeg;
       
-      calculateDeg(deg);
+      calculateDeg(deg, name);
       
       
       if(deg==225){ 
@@ -308,7 +343,7 @@ function expandSelect(id){
     var select_flag = document.getElementById('select_flag1').value;
         if(select_flag==1){
             var select_box = document.getElementById(id);
-            if(id.selectedIndex=="2") {o.type= 'square'}
+            if(id.selectedIndex=="2") {o1.type= 'square'}
             document.getElementById('select_flag1').value = 0;
         }else{
             var select_box = document.getElementById(id);
