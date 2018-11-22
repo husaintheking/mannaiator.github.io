@@ -1,4 +1,4 @@
-var c1;
+var c1,c2,c3;
 var o;
 var n = 0;
 var f;
@@ -6,7 +6,10 @@ var gradi = [];
 var selectedGain = [];
 var deg=0;
 var sel= document.getElementById("select_box");
-
+var firstTime=true;
+var turnOn1=false, turnOn2=false;
+var gates=[];
+sel.disabled=true;
 
 function createAudio1(){
   c1= new AudioContext();
@@ -17,25 +20,28 @@ function createAudio1(){
   dataArray = new Uint8Array(bufferLength);
 }
 
-
 function createAudio2(){
   c2= new AudioContext();
   canvas = document.querySelector("#canv2");
-  ctx= canvas.getContext("2d");
-  analyser2 = c2.createAnalyser();
+  ctx = canvas.getContext("2d");
+  analyser = c2.createAnalyser();
   bufferLength = analyser.frequencyBinCount;
   dataArray = new Uint8Array(bufferLength);
 }
 
+
 function attack(freq ,selGain) {
-  o= c1.createOscillator();
-  g = c1.createGain();
+  c= new AudioContext();
+  if (turnOn1)  c=c1;
+  if (turnOn2)   c=c2;
+  o = c.createOscillator();
+  g = c.createGain();
   o.connect(g);
   g.connect(analyser);
-  analyser.connect(c1.destination);
+  analyser.connect(c.destination);
   o.frequency.value = freq;
   g.gain.value = 0;
-  var now = c1.currentTime;
+  var now = c.currentTime;
   g.gain.linearRampToValueAtTime(selGain,now+0.1);
   gates[freq] = g;
   o.start();
@@ -46,36 +52,55 @@ function attack(freq ,selGain) {
 }
 
 function deleteAudio(){
-  c1.close();  
+  if(turnOn1) c1.close();
+  if(turnOn2) c2.close();  
 }
 
+function activateAudio(x){
+  
+  changeColorDot(x);
+  
+  if(x==1){
+    if (!turnOn1) {
+          createAudio1();
+          drawSamples();
+          sel.disabled = false;
+          
+    }
+    else {
+      analyser = c1.createAnalyser();
+      deleteAudio();
+      sel.disabled = true
+    }
+  
+    turnOn1=!turnOn1;  
+  }
+  
+  
+  if(x==2){
+    if (!turnOn2) {
+          createAudio2();
+          drawSamples();
+          sel.disabled = false;
+          
+      
+    }
+    else {
+      analyser = c2.createAnalyser();
+      deleteAudio();
+      sel.disabled = true
+    }
+  
+    turnOn2=!turnOn2;  
+  }
+  }
 
-var firstTime=true;
-var turnOn=false;
-sel.disabled=true;
 
 function changeColorDot(x){
   var y = "dot" + x;
   var z = "osc" + x;
   document.getElementById(y).classList.toggle("clicked");
-  document.getElementById(z).classList.toggle("selectedOsc");
-  
-  if(x==1){
-  
-  if (turnOn==false) {
-          createAudio1();
-          drawSamples();
-          sel.disabled = false;
-  }
-  else {
-    analyser = c1.createAnalyser();
-    deleteAudio();
-    sel.disabled = true
-  }
-  
-    turnOn=!turnOn;
-    
-  }
+  document.getElementById(z).classList.toggle("selectedOsc") 
 }
 
 
@@ -91,12 +116,15 @@ function drawSamples(){
   requestAnimationFrame(drawSamples)
 }
 
-var gates=[];
+
 
 
 
 function release(freq) {
-  gates[freq].gain.linearRampToValueAtTime(0,c1.currentTime+0.8);
+  c = new AudioContext();
+  if (turnOn1)  c=c1;
+  if (turnOn2)  c=c2;
+  gates[freq].gain.linearRampToValueAtTime(0,c.currentTime+0.8);
 }
 
 tones = [] //note
@@ -119,33 +147,31 @@ function toggleStep(step){
       }
 
   }
-    
-  
-  
+      
   step.onmouseup= function (step) {
-    if(!step.repeat) 
-      {step.target.classList.toggle("clicked-step")
-       release(tones[mouseSteps.indexOf(step.target.id)]);
+    if(!step.repeat){
+       step.target.classList.toggle("clicked-step")
+      release(tones[mouseSteps.indexOf(step.target.id)]);
       }
   }
 }
 
+
 function clickOnKeyBoard(step){
   step.classList.toggle("clicked-step")
   
-  
 }
 
-document.onkeydown = function(e) {
-  
+
+document.onkeydown = function(e) {  
   if(!e.repeat){
     clickOnKeyBoard(steps[keys.indexOf(e.key)])
     attack(tones[keys.indexOf(e.key)], selectedGain[f])
-  }a
+  }
 }
 
-document.onkeyup = function(e) { 
-  
+
+document.onkeyup = function(e) {   
   clickOnKeyBoard(steps[keys.indexOf(e.key)]);
   release(tones[keys.indexOf(e.key)]);
   //drawSamples();       
@@ -156,7 +182,14 @@ function calculateDeg(deg){
   f = gradi.indexOf(deg);
 }
 
-let spinner = document.getElementById('vol1');
+
+
+moveKnob('vol1');
+moveKnob('vol2');
+
+function moveKnob(name){
+
+let spinner = document.getElementById(name);
     //feedback = document.getElementById('feedback')
 let x,
     y,
@@ -199,8 +232,6 @@ window.addEventListener('mousemove',function(e){
   if (hold){
      diffX= e.clientX - startX + saveX;
      diffY= e.clientY - startY + saveY;
-    //console.log(saveX,saveY +"BASTARDO")
-    //console.log(diffX,diffY)
     
     delta = Math.abs(diffX) > Math.abs(diffY) ? -diffX : diffY;
     if(tryFlag){
@@ -252,12 +283,13 @@ window.addEventListener('mousemove',function(e){
   
 })
 
+
 function calculateMax(){
   if(indice==0)
     {
       saveX=diffX;
       saveY=diffY;
-      console.log(saveX,saveY)
+      
     }
   indice++;
   //console.log(indice);
@@ -270,17 +302,18 @@ function calculateCoord(){
   calculate=false;
 }
 
+}
 
 function expandSelect(id){
-    var select_flag = document.getElementById('select_flag').value;
+    var select_flag = document.getElementById('select_flag1').value;
         if(select_flag==1){
             var select_box = document.getElementById(id);
             if(id.selectedIndex=="2") {o.type= 'square'}
-            document.getElementById('select_flag').value = 0;
+            document.getElementById('select_flag1').value = 0;
         }else{
             var select_box = document.getElementById(id);
             select_box.size = select_box.options.length; 
-            document.getElementById('select_flag').value = 1;
+            document.getElementById('select_flag1').value = 1;
         }
    }
 
