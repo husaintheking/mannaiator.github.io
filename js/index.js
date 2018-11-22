@@ -1,68 +1,97 @@
-var c1,c2,c3;
+var cMaster;
 var o1,o2,o3;
+var analyser1, analyser2, analyser3;
+var o1Array = new Array(25);
+var o2Array = new Array(25);
+var o3Array = new Array(25);
 var n = 0;
-var f1,f2;
+var f1,f2,f3;      //index of the current grade calcualted by "calculateDeg" function
 var gradi = [];
 var selectedGain = [];
 var deg=0;
 var sel1= document.getElementById("select_box1");
 var sel2= document.getElementById("select_box2");
+var sel3= document.getElementById("select_box3");
 var firstTime=true;
-var turnOn1=false, turnOn2=false;
-var gates=[];
+var turnOn1=false, turnOn2=false, turnOn3=false;
+var gates1=[], gates2=[], gates3=[];
 sel1.disabled=true;
 sel2.disabled=true;
+sel3.disabled=true;
+var cMaster = new AudioContext();
+var gainMaster= cMaster.createGain();
+gainMaster.connect(cMaster.destination);
+
 
 function createAudio1(){
-  c1= new AudioContext();
-  canvas = document.querySelector("#canv1");
-  ctx = canvas.getContext("2d");
-  analyser = c1.createAnalyser();
-  bufferLength = analyser.frequencyBinCount;
+  canvas1 = document.querySelector("#canv1");
+  ctx1 = canvas1.getContext("2d");
+  analyser1 = cMaster.createAnalyser();
+  bufferLength = analyser1.frequencyBinCount;
   dataArray = new Uint8Array(bufferLength);
   
 }
 
 function createAudio2(){
-  c2= new AudioContext();
-  canvas = document.querySelector("#canv2");
-  ctx = canvas.getContext("2d");
-  analyser = c2.createAnalyser();
-  bufferLength = analyser.frequencyBinCount;
+  canvas2 = document.querySelector("#canv2");
+  ctx2 = canvas2.getContext("2d");
+  analyser2 = cMaster.createAnalyser();
+  bufferLength = analyser2.frequencyBinCount;
+  dataArray = new Uint8Array(bufferLength);
+}
+
+function createAudio3(){
+  canvas3 = document.querySelector("#canv3");
+  ctx3 = canvas3.getContext("2d");
+  analyser3 = cMaster.createAnalyser();
+  bufferLength = analyser3.frequencyBinCount;
   dataArray = new Uint8Array(bufferLength);
 }
 
 
+
 function attack1(freq ,selGain) {
-  console.log("cia");
-  o1 = c1.createOscillator();
-  g = c1.createGain();
+  o1 = cMaster.createOscillator();
+  g = cMaster.createGain();
   o1.connect(g);
-  g.connect(analyser);
-  analyser.connect(c1.destination);
+  g.connect(analyser1);
+  analyser1.connect(gainMaster);
   o1.frequency.value = freq;
   g.gain.value = 0;
-  var now = c1.currentTime;
+  var now = cMaster.currentTime;
   g.gain.linearRampToValueAtTime(selGain,now+0.1);
-  gates[freq] = g;
+  gates1[freq] = g;
+  
+  o1Array[tones.indexOf(freq)] = o1;
+  
+ 
+  
   o1.start();
   if (sel1.options.selectedIndex=="0") {o1.type='sine'}
   if (sel1.options.selectedIndex=="1") {o1.type='triangle'}
   if (sel1.options.selectedIndex=="2") {o1.type='square'}
    if (sel1.options.selectedIndex=="3") {o1.type='sawtooth'}
+    
+}
+
+function release1(freq) { 
+  gates1[freq].gain.linearRampToValueAtTime(0,cMaster.currentTime+0.8);
 }
 
 function attack2(freq ,selGain) {
-  o2 = c2.createOscillator();
-  g = c2.createGain();
+  o2 = cMaster.createOscillator();
+  g = cMaster.createGain();
   o2.connect(g);
-  g.connect(analyser);
-  analyser.connect(c2.destination);
+  g.connect(analyser2);
+  analyser2.connect(gainMaster);
   o2.frequency.value = freq;
   g.gain.value = 0;
-  var now = c2.currentTime;
+  var now = cMaster.currentTime;
   g.gain.linearRampToValueAtTime(selGain,now+0.1);
-  gates[freq] = g;
+  gates2[freq] = g;
+  
+  o2Array[tones.indexOf(freq)] = o2;
+  
   o2.start();
   if (sel2.options.selectedIndex=="0") {o2.type='sine'}
   if (sel2.options.selectedIndex=="1") {o2.type='triangle'}
@@ -70,26 +99,67 @@ function attack2(freq ,selGain) {
    if (sel2.options.selectedIndex=="3") {o2.type='sawtooth'}
 }
 
-
-function deleteAudio(){
-  if(turnOn1) c1.close();
-  if(turnOn2) c2.close();  
+function release2(freq) { 
+  gates2[freq].gain.linearRampToValueAtTime(0,cMaster.currentTime+0.8);
 }
 
+
+function attack3(freq ,selGain) {
+  o3 = cMaster.createOscillator();
+  g = cMaster.createGain();
+  o3.connect(g);
+  g.connect(analyser3);
+  analyser3.connect(gainMaster);
+  o3.frequency.value = freq;
+  g.gain.value = 0;
+  var now = cMaster.currentTime;
+  g.gain.linearRampToValueAtTime(selGain,now+0.1);
+  gates3[freq] = g;
+  
+  o3Array[tones.indexOf(freq)] = o3;
+  
+  o3.start();
+  if (sel3.options.selectedIndex=="0") {o3.type='sine'}
+  if (sel3.options.selectedIndex=="1") {o3.type='triangle'}
+  if (sel3.options.selectedIndex=="2") {o3.type='square'}
+   if (sel3.options.selectedIndex=="3") {o3.type='sawtooth'}
+}
+
+function release3(freq) { 
+  gates3[freq].gain.linearRampToValueAtTime(0,cMaster.currentTime+0.8);
+}
+
+
+function deleteAudio(){
+  if(turnOn1 && !turnOn2 ) {
+    o1.stop();
+    for(i=0;i<o1Array.length;i++)
+      {if(o1Array[i]!=undefined)
+        o1Array[i].stop();
+      }
+  }
+  if(turnOn2 && !turnOn1) {
+    for(i=0;i<o2Array.length;i++)
+      {if(o2Array[i]!=undefined)
+        o2Array[i].stop();
+      }
+  } 
+ 
+}
+
+
 function activateAudio(x){
-  
   changeColorDot(x);
-  
   if(x==1){
+   
     if (!turnOn1) {
           createAudio1();
-      
-          drawSamples();
-          sel1.disabled = false;
-          
+          drawSamples1();
+          sel1.disabled = false;     
     }
     else {
-      analyser = c1.createAnalyser();
+      
+      analyser1 = cMaster.createAnalyser();
       deleteAudio();
       sel1.disabled = true
     }
@@ -101,23 +171,44 @@ function activateAudio(x){
   if(x==2){
     if (!turnOn2) {
           createAudio2();
-          drawSamples();
+          drawSamples2();
           sel2.disabled = false;
           
       
     }
     else {
-      analyser = c2.createAnalyser();
+      analyser2 = cMaster.createAnalyser();
       deleteAudio();
       sel2.disabled = true
     }
   
     turnOn2=!turnOn2;  
   }
+  
+  if(x==3){
+    if (!turnOn3) {
+          createAudio3();
+          drawSamples3();
+          sel3.disabled = false;
+          
+      
+    }
+    else {
+      analyser3 = cMaster.createAnalyser();
+      deleteAudio();
+      sel3.disabled = true
+    }
+  
+    turnOn3=!turnOn3;  
   }
+  
+  
+  
+}
 
 
 function changeColorDot(x){
+  
   var y = "dot" + x;
   var z = "osc" + x;
   document.getElementById(y).classList.toggle("clicked");
@@ -125,28 +216,48 @@ function changeColorDot(x){
 }
 
 
-function drawSamples(){
-  analyser.getByteTimeDomainData(dataArray);
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.beginPath();
-  for (var i=0; i<canvas.width; i++) {
-    ctx.lineTo(i,dataArray[i]-canvas.height*0.8)
+function drawSamples1(){
+  analyser1.getByteTimeDomainData(dataArray);
+  ctx1.clearRect(0,0,canvas1.width,canvas1.height);
+  ctx1.beginPath();
+  for (var i=0; i<canvas1.width; i++) {
+    ctx1.lineTo(i,dataArray[i]-canvas1.height*0.8)
   }
-  ctx.strokeStyle = "#00FF00";
-  ctx.stroke();
-  requestAnimationFrame(drawSamples)
+  ctx1.strokeStyle = "#00FF00";
+  ctx1.stroke();
+  requestAnimationFrame(drawSamples1)
+}
+
+function drawSamples2(){
+  analyser2.getByteTimeDomainData(dataArray);
+  ctx2.clearRect(0,0,canvas2.width,canvas2.height);
+  ctx2.beginPath();
+  for (var i=0; i<canvas2.width; i++) {
+    ctx2.lineTo(i,dataArray[i]-canvas2.height*0.8)
+  }
+  ctx2.strokeStyle = "#00FF00";
+  ctx2.stroke();
+  requestAnimationFrame(drawSamples2)
+}
+
+function drawSamples3(){
+  analyser3.getByteTimeDomainData(dataArray);
+  ctx3.clearRect(0,0,canvas3.width,canvas3.height);
+  ctx3.beginPath();
+  for (var i=0; i<canvas3.width; i++) {
+    ctx3.lineTo(i,dataArray[i]-canvas3.height*0.8)
+  }
+  ctx3.strokeStyle = "#00FF00";
+  ctx3.stroke();
+  requestAnimationFrame(drawSamples3)
 }
 
 
 
 
 
-function release(freq) {
-  c = new AudioContext();
-  if (turnOn1)  c=c1;
-  if (turnOn2)  c=c2;
-  gates[freq].gain.linearRampToValueAtTime(0,c.currentTime+0.8);
-}
+
+
 
 tones = [] //note
 steps = [] //tasti
@@ -156,32 +267,40 @@ for(var i=0;i<25;i++) {
   steps[i] = document.querySelector("#s"+i);
   mouseSteps[i] = "s"+i;
   }
-keys = "qwertyuiopasdfghjklzxcvbn"
-
+keys = "qwertyuiopasdfghjklzxcvbn";
 document.querySelectorAll(".step").forEach(toggleStep)
 
 function toggleStep(step){  
   step.onmousedown= function (step) {
     if(!step.repeat) 
       {step.target.classList.toggle("clicked-step");
-       if(turnOn1)
+       if(turnOn1 && !turnOn2 && !turnOn3)
             {attack1(tones[mouseSteps.indexOf(step.target.id)], selectedGain[f]);
-             
             }
-       if(turnOn2)
+       
+       if(!turnOn1 && turnOn2 && !turnOn3){
             attack2(tones[mouseSteps.indexOf(step.target.id)], selectedGain[f]);
       }
+    
+      if(!turnOn1 && !turnOn2 && turnOn3){
+            attack3(tones[mouseSteps.indexOf(step.target.id)], selectedGain[f]);
+      }
+    
+     if(turnOn1 && turnOn2)
+            {attack1(tones[mouseSteps.indexOf(step.target.id)], selectedGain[f]);
+             attack2(tones[mouseSteps.indexOf(step.target.id)], selectedGain[f]);
+            }
 
   }
-      
+     
   step.onmouseup= function (step) {
     if(!step.repeat){
        step.target.classList.toggle("clicked-step")
       release(tones[mouseSteps.indexOf(step.target.id)]);
       }
   }
+  }
 }
-
 
 function clickOnKeyBoard(step){
   step.classList.toggle("clicked-step")
@@ -191,18 +310,78 @@ function clickOnKeyBoard(step){
 
 document.onkeydown = function(e) {  
   if(!e.repeat){
+
     clickOnKeyBoard(steps[keys.indexOf(e.key)])
-    if(turnOn1)
-    attack1(tones[keys.indexOf(e.key)], selectedGain[f1])
-    if(turnOn2)
-    attack2(tones[keys.indexOf(e.key)], selectedGain[f2])
+    if(turnOn1 && !turnOn2 && !turnOn3)
+        attack1(tones[keys.indexOf(e.key)], selectedGain[f1])
+    
+    if(!turnOn1 && turnOn2 && !turnOn3)
+        attack2(tones[keys.indexOf(e.key)], selectedGain[f2])
+    
+    if(!turnOn1 && !turnOn2 && turnOn3)
+        attack3(tones[keys.indexOf(e.key)], selectedGain[f3])
+    
+    if(turnOn1 && turnOn2 && !turnOn3){
+        attack1(tones[keys.indexOf(e.key)], selectedGain[f1])
+        attack2(tones[keys.indexOf(e.key)], selectedGain[f2])
+    }
+    
+    if(!turnOn1 && turnOn2 && turnOn3){
+        attack2(tones[keys.indexOf(e.key)], selectedGain[f2])
+        attack3(tones[keys.indexOf(e.key)], selectedGain[f3])
+    }
+    
+    if(turnOn1 && !turnOn2 && turnOn3){
+        attack1(tones[keys.indexOf(e.key)], selectedGain[f1])
+        attack3(tones[keys.indexOf(e.key)], selectedGain[f3])
+    }
+    
+    if(turnOn1 && turnOn2 && turnOn3){
+        attack1(tones[keys.indexOf(e.key)], selectedGain[f1])
+        attack2(tones[keys.indexOf(e.key)], selectedGain[f2])
+        attack3(tones[keys.indexOf(e.key)], selectedGain[f3])
+    }
+            
   }
 }
 
 
 document.onkeyup = function(e) {   
   clickOnKeyBoard(steps[keys.indexOf(e.key)]);
-  release(tones[keys.indexOf(e.key)]);
+  
+  
+  if(turnOn1 && !turnOn2 && !turnOn3)
+        release1(tones[keys.indexOf(e.key)]);
+    
+    if(!turnOn1 && turnOn2 && !turnOn3)
+        release2(tones[keys.indexOf(e.key)]);
+    
+    if(!turnOn1 && !turnOn2 && turnOn3)
+        release3(tones[keys.indexOf(e.key)]);
+    
+    if(turnOn1 && turnOn2 && !turnOn3){
+        release1(tones[keys.indexOf(e.key)]);
+        release2(tones[keys.indexOf(e.key)]);
+    }
+    
+    if(!turnOn1 && turnOn2 && turnOn3){
+        release2(tones[keys.indexOf(e.key)]);
+        release3(tones[keys.indexOf(e.key)]);
+    }
+    
+    if(turnOn1 && !turnOn2 && turnOn3){
+        release1(tones[keys.indexOf(e.key)]);
+        release3(tones[keys.indexOf(e.key)]);
+    }
+    
+    if(turnOn1 && turnOn2 && turnOn3){
+        release1(tones[keys.indexOf(e.key)]);
+        release2(tones[keys.indexOf(e.key)]);
+        release3(tones[keys.indexOf(e.key)]);
+    }
+  
+  
+  
   //drawSamples();       
 }
 
@@ -212,8 +391,8 @@ function calculateDeg(deg,name){
     f1= gradi.indexOf(deg);
   if(name=='vol2')
     f2= gradi.indexOf(deg);
-  
-  console.log(f1,f2)
+   if(name=='vol3')
+    f3= gradi.indexOf(deg);
 }
 
 
@@ -221,6 +400,7 @@ function calculateDeg(deg,name){
 
 moveKnob('vol1');
 moveKnob('vol2');
+moveKnob('vol3');
 
 function moveKnob(name){
 
@@ -369,8 +549,3 @@ for(i=0;i<=20;i++){
   selectedGain[i] = j;
   j+=numGain;
 }
-
-
-
-
-//console.log(deg);
