@@ -3,6 +3,4 @@ A Pen created at CodePen.io. You can find this one at https://codepen.io/Karwelo
  facciamolooooooo
 poi
 
-
-qualcosa
 porco il dio can ciao
